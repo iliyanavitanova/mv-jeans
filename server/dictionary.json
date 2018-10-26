@@ -1,12 +1,10 @@
-{
-    "length": [
+[
         {
-            "key": "Long",
+            "label": "Long",
             "value": 1
         },
         {
-            "key": "Short",
+            "label": "Short",
             "value": 2
         }
     ]
-}

@@ -35,7 +35,6 @@ export default class IndexComponent extends Component {
                   <td>Count</td>
                   <td>Price</td>
                   <td>Wholesale Price</td>
-                  <td>Length</td>
                 </tr>
               </thead>
               <tbody>

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-export default class CreateComponent extends Component {
+export default class SellComponent extends Component {
 
     constructor(props) {
         super(props);
@@ -11,7 +11,6 @@ export default class CreateComponent extends Component {
         this.onChangePrice = this.onChangePrice.bind(this);
         this.onChangeWholesalePrice = this.onChangeWholesalePrice.bind(this);
         this.onSubmit = this.onSubmit.bind(this);
-
         this.state = {
             brand: '',
             model: '',
@@ -19,12 +18,33 @@ export default class CreateComponent extends Component {
             count: '',
             price: '',
             wholesalePrice: ''
-        }
+        };
     }
+
+    componentDidMount() {
+        axios.get('http://localhost:4200/product/edit/' + this.props.match.params.id)
+            .then(response => {
+                this.setState({
+                    brand: response.data.brand,
+                    model: response.data.model,
+                    size: response.data.size,
+                    count: response.data.count,
+                    price: response.data.price,
+                    wholesalePrice: response.data.wholesalePrice
+                });
+            })
+            .catch(function (error) {
+                console.log(error);
+            })
+    }
+
     onChangeBrand(e) {
         this.setState({
             brand: e.target.value
         });
+    }
+    options(e) {
+
     }
     onChangeModel(e) {
         this.setState({
@@ -53,7 +73,6 @@ export default class CreateComponent extends Component {
     }
     onSubmit(e) {
         e.preventDefault();
-        debugger
         const product = {
             brand: this.state.brand,
             model: this.state.model,
@@ -62,8 +81,12 @@ export default class CreateComponent extends Component {
             price: this.state.price,
             wholesalePrice: this.state.wholesalePrice
         }
-        axios.post('http://localhost:4200/product/add', product)
-            .then(res => console.log(res.data));
+        axios.post('http://localhost:4200/product/sell/' + this.props.match.params.id, product)
+            .then(res => {
+                axios.get('http://localhost:4200/product/delete/' + this.props.match.params.id)
+                    .then(console.log('Deleted'))
+                    .catch(err => console.log(err))
+            });
         this.setState({
             brand: '',
             model: '',
@@ -72,12 +95,13 @@ export default class CreateComponent extends Component {
             price: '',
             wholesalePrice: ''
         });
+        this.props.history.push('/index');
     }
 
     render() {
         return (
             <div style={{ marginTop: 50 }}>
-                <h3>Add New Product</h3>
+                <h3>Sell New Server</h3>
                 <form onSubmit={this.onSubmit}>
                     <div className="form-group">
                         <label>Brand:  </label>
@@ -104,7 +128,7 @@ export default class CreateComponent extends Component {
                         <input type="text" value={this.state.wholesalePrice} className="form-control" onChange={this.onChangeWholesalePrice} required />
                     </div>
                     <div className="form-group">
-                        <input type="submit" value="Add New Product" className="btn btn-primary" />
+                        <input type="submit" value="Update server" className="btn btn-primary" />
                     </div>
                 </form>
             </div>

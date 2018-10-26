@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-
 export default class EditComponent extends Component {
 
     constructor(props) {
@@ -11,7 +10,6 @@ export default class EditComponent extends Component {
         this.onChangeCount = this.onChangeCount.bind(this);
         this.onChangePrice = this.onChangePrice.bind(this);
         this.onChangeWholesalePrice = this.onChangeWholesalePrice.bind(this);
-        this.onChangeLength = this.onChangeLength.bind(this);
         this.onSubmit = this.onSubmit.bind(this);
         this.state = {
             brand: '',
@@ -19,22 +17,20 @@ export default class EditComponent extends Component {
             size: '',
             count: '',
             price: '',
-            wholesalePrice: '',
-            length: ''
+            wholesalePrice: ''
         };
     }
 
     componentDidMount() {
         axios.get('http://localhost:4200/product/edit/' + this.props.match.params.id)
-            .then(response => {
+        .then(response => {
                 this.setState({
                     brand: response.data.brand, 
                     model: response.data.model,
                     size: response.data.size, 
                     count: response.data.count,
                     price: response.data.price, 
-                    wholesalePrice: response.data.wholesalePrice,
-                    length: response.data.length
+                    wholesalePrice: response.data.wholesalePrice
                 });
             })
             .catch(function (error) {
@@ -46,6 +42,9 @@ export default class EditComponent extends Component {
         this.setState({
             brand: e.target.value
         });
+    }
+    options(e) {
+        
     }
     onChangeModel(e) {
         this.setState({
@@ -72,11 +71,6 @@ export default class EditComponent extends Component {
             wholesalePrice: e.target.value
         });
     }
-    onChangeLength(e) {
-        this.setState({
-            length: e.target.value
-        });
-    }
     onSubmit(e) {
         e.preventDefault();
         const product = {
@@ -85,8 +79,7 @@ export default class EditComponent extends Component {
             size: this.state.size,
             count: this.state.count,
             price: this.state.price,
-            wholesalePrice: this.state.wholesalePrice,
-            length: this.state.length
+            wholesalePrice: this.state.wholesalePrice
         }
         axios.post('http://localhost:4200/product/update/' + this.props.match.params.id, product)
             .then(res => console.log(res.data));
@@ -96,8 +89,7 @@ export default class EditComponent extends Component {
             size: '',
             count: '',
             price: '',
-            wholesalePrice: '',
-            length: ''
+            wholesalePrice: ''
         });
         this.props.history.push('/index');
     }
@@ -130,10 +122,6 @@ export default class EditComponent extends Component {
                     <div className="form-group">
                         <label>Wholesale Price: </label>
                         <input type="text" value={this.state.wholesalePrice} className="form-control" onChange={this.onChangeWholesalePrice} required />
-                    </div>
-                    <div className="form-group">
-                        <label>Length: </label>
-                        <input type="text" value={this.state.length} className="form-control" onChange={this.onChangeLength} required />
                     </div>
                     <div className="form-group">
                         <input type="submit" value="Update server" className="btn btn-primary" />

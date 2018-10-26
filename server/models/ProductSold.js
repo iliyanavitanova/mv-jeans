@@ -1,10 +1,10 @@
-// Product.js
+// ProductSold.js
 
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 // Define collection and schema for Items
-var Product = new Schema({
+var ProductSold = new Schema({
     brand: {
         type: String
     },
@@ -22,9 +22,12 @@ var Product = new Schema({
     },
     wholesalePrice: {
         type: Number
+    },
+    profit: {
+        type: Number
     }
 }, {
-        collection: 'products'
+        collection: 'productsSold'
     });
 
-module.exports = mongoose.model('Product', Product);
+module.exports = mongoose.model('ProductSold', ProductSold);

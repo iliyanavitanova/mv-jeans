@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 
 import CreateComponent from './components/CreateComponent';
 import EditComponent from './components/EditComponent';
+import SellComponent from './components/SellComponent';
 import IndexComponent from './components/IndexComponent';
 
 class App extends Component {
@@ -29,6 +30,7 @@ class App extends Component {
           <Switch>
               <Route exact path='/create' component={CreateComponent} />
               <Route path='/edit/:id' component={EditComponent} />
+              <Route path='/sell/:id' component={SellComponent} />
               <Route path='/index' component={IndexComponent} />
           </Switch>
         </div>
