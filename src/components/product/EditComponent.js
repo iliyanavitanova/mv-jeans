@@ -124,7 +124,7 @@ export default class EditComponent extends Component {
                         <input type="text" value={this.state.wholesalePrice} className="form-control" onChange={this.onChangeWholesalePrice} required />
                     </div>
                     <div className="form-group">
-                        <input type="submit" value="Update server" className="btn btn-primary" />
+                        <input type="submit" value="Update product" className="btn btn-success" />
                     </div>
                 </form>
             </div>

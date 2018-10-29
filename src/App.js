@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 
-import CreateComponent from './components/CreateComponent';
-import EditComponent from './components/EditComponent';
-import SellComponent from './components/SellComponent';
-import IndexComponent from './components/IndexComponent';
+import CreateComponent from './components/product/CreateComponent';
+import EditComponent from './components/product/EditComponent';
+import SellComponent from './components/product/SellComponent';
+import IndexComponent from './components/product/IndexComponent';
 
 class App extends Component {
   render() {
@@ -12,7 +12,7 @@ class App extends Component {
     <Router>
         <div className="container">
         <nav className="navbar navbar-expand-lg navbar-light bg-light">
-            <a className="navbar-brand">MV Jeans</a>
+            <a className="navbar-brand"><img src="/favicon.ico" width="30" height="30" className="d-inline-block align-top" alt=""/>MV Jeans</a>
             <div className="collapse navbar-collapse" id="navbarSupportedContent">
               <ul className="navbar-nav mr-auto">
               <li className="nav-item">
