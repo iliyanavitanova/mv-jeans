@@ -1,40 +1,46 @@
-import React, { Component } from 'react';
-import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
+// App.js
 
-import CreateComponent from './components/product/CreateComponent';
-import EditComponent from './components/product/EditComponent';
-import SellComponent from './components/product/SellComponent';
-import IndexComponent from './components/product/IndexComponent';
+import React, { Component } from 'react';
+import { BrowserRouter as Router, Route } from 'react-router-dom';
+import { Provider } from 'react-redux';
+import store from './store';
+import jwt_decode from 'jwt-decode';
+import setAuthToken from './setAuthToken';
+import { setCurrentUser, logoutUser } from './actions/authentication';
+
+import Home from './components/user/HomeComponent';
+import Register from './components/user/RegisterComponent';
+import Login from './components/user/LoginComponent';
+import Index from './components/user/IndexComponent';
+
+import 'bootstrap/dist/css/bootstrap.min.css';
+
+if (localStorage.jwtToken) {
+  setAuthToken(localStorage.jwtToken);
+  const decoded = jwt_decode(localStorage.jwtToken);
+  store.dispatch(setCurrentUser(decoded));
+
+  const currentTime = Date.now() / 1000;
+  if (decoded.exp < currentTime) {
+    store.dispatch(logoutUser());
+    window.location.href = '/login'
+  }
+}
 
 class App extends Component {
   render() {
     return (
-    <Router>
-        <div className="container">
-        <nav className="navbar navbar-expand-lg navbar-light bg-light">
-            <a className="navbar-brand"><img src="/favicon.ico" width="30" height="30" className="d-inline-block align-top" alt=""/>MV Jeans</a>
-            <div className="collapse navbar-collapse" id="navbarSupportedContent">
-              <ul className="navbar-nav mr-auto">
-              <li className="nav-item">
-                  <Link to={'/'} className="nav-link">Home</Link>
-                </li>
-                <li className="nav-item">
-                  <Link to={'/create'} className="nav-link">Create</Link>
-                </li>
-                <li className="nav-item">
-                  <Link to={'/index'} className="nav-link">Index</Link>
-                </li>
-              </ul>
+      <Provider store={store}>
+        <Router>
+          <div>
+            <Route exact path="/" component={Home} />
+            <div className="container">
+              <Route exact path="/register" component={Register} />
+              <Route exact path="/login" component={Login} />
             </div>
-          </nav>
-          <Switch>
-              <Route exact path='/create' component={CreateComponent} />
-              <Route path='/edit/:id' component={EditComponent} />
-              <Route path='/sell/:id' component={SellComponent} />
-              <Route path='/index' component={IndexComponent} />
-          </Switch>
-        </div>
-      </Router>
+          </div>
+        </Router>
+      </Provider>
     );
   }
 }
