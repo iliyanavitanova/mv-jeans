@@ -8,10 +8,9 @@ import jwt_decode from 'jwt-decode';
 import setAuthToken from './setAuthToken';
 import { setCurrentUser, logoutUser } from './actions/authentication';
 
-import Home from './components/user/HomeComponent';
+import Index from './components/user/IndexComponent';
 import Register from './components/user/RegisterComponent';
 import Login from './components/user/LoginComponent';
-import Index from './components/user/IndexComponent';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 
@@ -33,7 +32,7 @@ class App extends Component {
       <Provider store={store}>
         <Router>
           <div>
-            <Route exact path="/" component={Home} />
+            <Route exact path="/" component={Index} />
             <div className="container">
               <Route exact path="/register" component={Register} />
               <Route exact path="/login" component={Login} />
