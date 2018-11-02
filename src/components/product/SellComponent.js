@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
-import axios from 'axios';
-export default class SellComponent extends Component {
+import { sellProduct, getProduct } from '../../actions/product';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+
+class SellComponent extends Component {
 
     constructor(props) {
         super(props);
@@ -22,14 +25,14 @@ export default class SellComponent extends Component {
     }
 
     componentDidMount() {
-        axios.get('http://localhost:4200/product/edit/' + this.props.match.params.id)
-            .then(response => {
+        this.props.getProduct(this.props.match.params.id);
+        .then(response => {
                 this.setState({
-                    brand: response.data.brand,
+                    brand: response.data.brand, 
                     model: response.data.model,
-                    size: response.data.size,
+                    size: response.data.size, 
                     count: response.data.count,
-                    price: response.data.price,
+                    price: response.data.price, 
                     wholesalePrice: response.data.wholesalePrice
                 });
             })
@@ -44,7 +47,7 @@ export default class SellComponent extends Component {
         });
     }
     options(e) {
-
+        
     }
     onChangeModel(e) {
         this.setState({
@@ -81,12 +84,7 @@ export default class SellComponent extends Component {
             price: this.state.price,
             wholesalePrice: this.state.wholesalePrice
         }
-        axios.post('http://localhost:4200/product/sell/' + this.props.match.params.id, product)
-            .then(res => {
-                axios.get('http://localhost:4200/product/delete/' + this.props.match.params.id)
-                    .then(console.log('Deleted'))
-                    .catch(err => console.log(err))
-            });
+        this.props.sellProduct(product, this.props.match.params.id);
         this.setState({
             brand: '',
             model: '',
@@ -135,3 +133,18 @@ export default class SellComponent extends Component {
         )
     }
 }
+
+
+SellComponent.propTypes = {
+    editProduct: PropTypes.func.isRequired,
+    getProduct: PropTypes.func.isRequired,
+    auth: PropTypes.object.isRequired,
+    errors: PropTypes.object.isRequired
+}
+
+const mapStateToProps = (state) => ({
+    auth: state.auth,
+    errors: state.errors
+})
+
+export  default connect(mapStateToProps, { sellProduct, getProduct })(SellComponent)

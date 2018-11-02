@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
-import axios from 'axios';
-export default class CreateComponent extends Component {
+import { addProduct } from '../../actions/product';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+
+class CreateComponent extends Component {
 
     constructor(props) {
         super(props);
@@ -61,8 +64,7 @@ export default class CreateComponent extends Component {
             price: this.state.price,
             wholesalePrice: this.state.wholesalePrice
         }
-        axios.post('http://localhost:4200/product/add', product)
-            .then(res => console.log(res.data));
+        this.props.addProduct(product);
         this.setState({
             brand: '',
             model: '',
@@ -110,3 +112,17 @@ export default class CreateComponent extends Component {
         )
     }
 }
+
+
+CreateComponent.propTypes = {
+    addProduct: PropTypes.func.isRequired,
+    auth: PropTypes.object.isRequired,
+    errors: PropTypes.object.isRequired
+}
+
+const mapStateToProps = (state) => ({
+    auth: state.auth,
+    errors: state.errors
+})
+
+export  default connect(mapStateToProps, { addProduct })(CreateComponent)

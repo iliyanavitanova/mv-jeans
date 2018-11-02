@@ -19,6 +19,9 @@ class IndexComponent extends Component {
         const { isAuthenticated, user } = this.props.auth;
         const authLinks = (
             <ul className="navbar-nav ml-auto">
+            <li className="nav-item">
+                    <Link className="nav-link" to="/add">Add product</Link>
+                </li>
                 <a href="#" className="nav-link" onClick={this.onLogout.bind(this)}>
                     Logout
                 </a>
@@ -38,7 +41,7 @@ class IndexComponent extends Component {
         return (
             <div>
                 <nav className="navbar navbar-expand-lg navbar-light bg-light">
-                    <Link className="navbar-brand" to="/">Redux Node Auth 2</Link>
+                    <Link className="navbar-brand" to="/">MV Jeans</Link>
                     <div className="collapse navbar-collapse" id="navbarSupportedContent">
                         {isAuthenticated ? authLinks : guestLinks}
                     </div>

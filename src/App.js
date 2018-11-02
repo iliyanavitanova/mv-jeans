@@ -11,6 +11,9 @@ import { setCurrentUser, logoutUser } from './actions/authentication';
 import Index from './components/user/IndexComponent';
 import Register from './components/user/RegisterComponent';
 import Login from './components/user/LoginComponent';
+import AddProduct from './components/product/CreateComponent';
+import EditProduct from './components/product/EditComponent';
+import SellProduct from './components/product/EditComponent';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 
@@ -36,6 +39,9 @@ class App extends Component {
             <div className="container">
               <Route exact path="/register" component={Register} />
               <Route exact path="/login" component={Login} />
+              <Route exact path="/add/:id" component={AddProduct} />
+              <Route exact path="/edit/:id" component={EditProduct} />
+              <Route exact path="/sell/:id" component={SellProduct} />
             </div>
           </div>
         </Router>

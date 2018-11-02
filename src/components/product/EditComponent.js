@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
-import axios from 'axios';
-export default class EditComponent extends Component {
+import { editProduct, getProduct } from '../../actions/product';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+
+class EditComponent extends Component {
 
     constructor(props) {
         super(props);
@@ -20,31 +23,27 @@ export default class EditComponent extends Component {
             wholesalePrice: ''
         };
     }
-
+    
     componentDidMount() {
-        axios.get('http://localhost:4200/product/edit/' + this.props.match.params.id)
-        .then(response => {
-                this.setState({
-                    brand: response.data.brand, 
-                    model: response.data.model,
-                    size: response.data.size, 
-                    count: response.data.count,
-                    price: response.data.price, 
-                    wholesalePrice: response.data.wholesalePrice
-                });
-            })
-            .catch(function (error) {
-                console.log(error);
-            })
+        var res = Promise.resolve(this.props.getProduct(this.props.match.params.id));
+        res.then(function(response){
+            this.setState({
+                brand: response.data.brand,
+                model: response.data.model,
+                size: response.data.size,
+                count: response.data.count,
+                price: response.data.price,
+                wholesalePrice: response.data.wholesalePrice})
+        })
+        
     }
-
     onChangeBrand(e) {
         this.setState({
             brand: e.target.value
         });
     }
     options(e) {
-        
+
     }
     onChangeModel(e) {
         this.setState({
@@ -81,8 +80,7 @@ export default class EditComponent extends Component {
             price: this.state.price,
             wholesalePrice: this.state.wholesalePrice
         }
-        axios.post('http://localhost:4200/product/update/' + this.props.match.params.id, product)
-            .then(res => console.log(res.data));
+        this.props.editProduct(product, this.props.match.params.id);
         this.setState({
             brand: '',
             model: '',
@@ -131,3 +129,18 @@ export default class EditComponent extends Component {
         )
     }
 }
+
+
+EditComponent.propTypes = {
+    editProduct: PropTypes.func.isRequired,
+    getProduct: PropTypes.func.isRequired,
+    auth: PropTypes.object.isRequired,
+    errors: PropTypes.object.isRequired
+}
+
+const mapStateToProps = (state) => ({
+    auth: state.auth,
+    errors: state.errors
+})
+
+export default connect(mapStateToProps, { editProduct, getProduct })(EditComponent)
